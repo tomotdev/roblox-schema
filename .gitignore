@@ -1,0 +1,9 @@
+/node_modules
+/out
+/include
+/testing
+package-lock.json
+*.tgz
+*.tsbuildinfo
+TODO.md
+.DS_Store
