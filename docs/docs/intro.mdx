@@ -1,0 +1,45 @@
+---
+sidebar_position: 1
+---
+
+# Introduction
+
+`roblox-schema` is a package allowing Roblox developers to use runtime schema validation. Its is mainly inspired by Zod, a JavaScript/TypeScript package.
+It works using _schemas_, which define a TypeScript type used to validate any type of data.
+
+```typescript
+import { Schema } from "@rbxts/roblox-schema";
+
+const userSchema = Schema.object({
+	id: Schema.number(),
+	name: Schema.string(),
+});
+
+// Unknown data
+const value = {/* stuff */};
+
+// Validates the data...
+if (userSchema.parse(value)) {
+    // ...and types the variable for you !
+    console.log(value.name);
+}
+```
+
+## Features
+
+- No dependencies
+- Primitive types (number, string, ...)
+- Objects/Arrays (tables)
+- Roblox Instances
+- Roblox data types (Vector3, CFrame, ...)
+- Optional values
+- Typed parsed values
+- Type creation from schema
+
+## Installation
+
+At this moment, `roblox-schema` is only available on NPM, via :
+
+```bash
+$ npm install @rbxts/roblox-schema
+```

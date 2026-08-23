@@ -1,7 +1,7 @@
 {
 	"name": "@rbxts/roblox-schema",
 	"version": "1.0.0",
-	"description": "roblox-schema is a data validation library",
+	"description": "Runtime schema validation for roblox-ts.",
 	"main": "out/init.lua",
 	"scripts": {
 		"build": "rbxtsc",
@@ -10,12 +10,15 @@
 	},
 	"keywords": [],
 	"author": "tomotdev",
-	"license": "ISC",
+	"license": "MIT",
 	"type": "commonjs",
 	"types": "out/index.d.ts",
 	"files": [
 		"out",
-		"!**/*.tsbuildinfo"
+		"!**/*.tsbuildinfo",
+        "../CHANGELOG.md",
+        "../README.md",
+        "../LICENSE.md"
 	],
 	"publishConfig": {
 		"access": "public"

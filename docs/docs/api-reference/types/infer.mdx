@@ -1,0 +1,33 @@
+---
+sidebar_position: 1
+title: Infer<T>
+---
+
+# Infer&lt;T&gt;
+
+```typescript
+type Infer<S extends BaseSchema> = S extends BaseSchema<infer T> ? T : never;
+```
+
+`Infer<T>` is a type helper used to extract a schema type. Here is an example use :
+
+```typescript
+import { Schema, Infer } from "@rbxts/roblox-schema";
+
+const userSchema = Schema.strictObject({
+    id: Schema.number(),
+    username: Schema.string(),
+    age: Schema.number().optional()
+});
+
+type User = Infer<typeof userSchema>;
+// Creates a new type which is :
+type User = {
+    id: number;
+    username: string;
+    age?: number;
+}
+```
+
+This can be useful when you want your schema to follow a type declaration, but don't want to edit both type and schema each time update one.
+By using `Infer`, your schema declaration also becomes your type declaration.

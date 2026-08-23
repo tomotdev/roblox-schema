@@ -1,0 +1,82 @@
+---
+sidebar_position: 2
+---
+
+# Basic usage
+
+This document will help you understand how to create and use schemas, parse data and creating types from schemas (inferred types).
+
+## Creating a schema
+
+Creating schemas is the starting point of every use of `roblox-schema`.
+There are infinite different schemas possibilities, but a basic one can be :
+
+```typescript
+import { Schema } from "@rbxts/roblox-schema";
+
+const schema = Schema.string();
+```
+
+This schema can be used to check if a value is a string. Pretty simple huh ? Let's take a look at a more complicated schema :
+
+```typescript
+import { Schema } from "@rbxts/roblox-schema";
+
+const userSchema = Schema.strictObject({
+    id: Schema.number(),
+    username: Schema.string()
+});
+```
+
+This `userSchema` only validates values typed as : `{ id: number, username: string }`.
+
+Some schema types provide composition methods, such as `min()` on a `StringSchema`, that allow defining a more precise schema. Here's an example :
+
+```typescript
+import { Schema } from "@rbxts/roblox-schema";
+
+const schema = Schema.string().min(5);
+
+schema.parse("abc") // false
+schema.parse("abcdef") // true
+```
+
+You can check the API reference for more details about every type of schema.
+
+## Parsing data
+
+Parsing data is just making an unknown value go through the whole validation process of the schema.
+At the end of it, the value is considered as valid if the `parse()` method returns `true`.
+For example :
+
+```typescript
+import { Schema } from "@rbxts/roblox-schema";
+
+const userSchema = Schema.strictObject({
+    id: Schema.number(),
+    username: Schema.string()
+});
+
+userSchema.parse({ id: 0, username: "John" }) // true - The value is valid according to the schema
+userSchema.parse({ id: true, username: "Lin" }) // false - "id" is not of type number
+```
+
+## Inferring types
+
+Inferring a type from a schema can be helpful when you want to have only one type for the whole codebase.
+It allows you to extract the type defined by the schema automatically, and to use it anywhere you want in your project.
+When the schema is modified, the type follows and gets updated automatically.
+
+Extracting a type from a schema can be done using a helper type, called `Infer` :
+
+```typescript
+import { Schema, Infer } from "@rbxts/roblox-schema";
+
+const userSchema = ... // Same as the one before
+
+type User = Infer<typeof userSchema>;
+
+let user: User;
+
+console.log(user.id) // Valid TypeScript
+```

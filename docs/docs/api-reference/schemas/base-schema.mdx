@@ -1,0 +1,36 @@
+---
+sidebar_position: 0
+---
+
+# BaseSchema
+
+Auto-generated class.
+
+Every schema type extends from this class, so every method available on this class is also available on other schema classes.
+
+When used in the documentation, this represent all the typed schemas.
+For example, a method accepting an argument of type `BaseSchema` actually accepts any schema such as `StringSchema` or `ObjectSchema`.
+
+## Methods
+
+
+<br />
+
+
+### `optional()`
+
+```typescript
+optional(): this
+```
+Allows the parsed value to be of type `undefined` instead of following the schema type.
+
+
+<br />
+
+
+### `parse()`
+
+```typescript
+parse(value: any): boolean
+```
+Returns a boolean representing whether the provided value meets the type requirements of the schema.

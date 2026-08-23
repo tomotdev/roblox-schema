@@ -1,6 +1,6 @@
 # @rbxts/roblox-schema
 
-Runtime schema validation for roblox-ts.
+Runtime schema validation for roblox-ts, inspired by Zod.
 
 ## 📦 Installation
 At this moment the package can only be installed using NPM :
@@ -33,46 +33,18 @@ parser.parse({
 
 ## ⭐ Features
 
+- No dependencies
 - Primitive types (number, string, ...)
 - Objects/Arrays (tables)
 - Roblox Instances
 - Roblox data types (Vector3, CFrame, ...)
 - Optional values
-- Type inference for parsed values
+- Typed parsed values
 - Type creation from schema
 
-## 📖 Documentation [WIP]
+## 📖 Documentation
 
-- ### Type inference
-`roblox-schema` provides type inference for values that are parsed. Here's an example :
-
-```typescript
-import { Schema } from "@rbxts/roblox-schema";
-
-const personSchema = Schema.object({
-    name: Schema.string(),
-    age: Schema.number()
-});
-
-const fetchedPerson = ... // Some non-typed data you fetched
-
-if(personSchema.parse(fetchedPerson)) {
-    print(fetchedPerson.name) // Typescript now knows property 'name' exists on the value
-}
-```
-
-- ### Type creation from schema
-`roblox-schema` provides an utility type named `Infer` that you can use to create a custom type based on a schema :
-```typescript
-import { Schema, Infer } from "@rbxts/roblox-schema";
-
-const schema = Schema.array(Schema.number());
-
-// The two following types are the same
-type SchemaType = Infer<typeof schema>;
-type SchemaType = number[];
-```
-This allows you to use the schema as centralized type to avoid multiple declarations of the same type.
+You can find full documentation [here](https://docs.tomot.fr/roblox-schema/docs/).
 
 ## 🔄️ Change log
 

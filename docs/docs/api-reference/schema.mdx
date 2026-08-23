@@ -1,0 +1,229 @@
+---
+sidebar_position: 1
+---
+
+# Schema
+
+This is the main class containing every constructor of typed schemas.
+It is recommended to use these static methods over class constructors as it is simpler and cleaner, but using constructors will work the same way.
+
+
+## Static methods
+
+
+<br />
+
+
+### `number()`
+
+```typescript
+static number(): NumberSchema
+```
+Creates a new [`NumberSchema`](/docs/api-reference/schemas/number-schema) and returns it.
+
+
+<br />
+
+
+### `string()`
+
+```typescript
+static string(): StringSchema
+```
+Creates a new [`StringSchema`](/docs/api-reference/schemas/string-schema) and returns it.
+
+
+<br />
+
+
+### `boolean()`
+
+```typescript
+static boolean(): BooleanSchema
+```
+Creates a new [`BooleanSchema`](/docs/api-reference/schemas/bool-schema) and returns it.
+
+
+<br />
+
+
+### `dataType()`
+
+```typescript
+static dataType<K extends keyof DataTypes>(t: K): DataTypeSchema<K>
+```
+Creates a new [`DataTypeSchema`](/docs/api-reference/schemas/data-type-schema) with a target data type provided, and returns it.
+
+**Arguments :**
+- `t: keyof DataTypes` : target Roblox data type to allow (Vector3, CFrame, ...)
+
+<details>
+    <summary>Code sample</summary>
+    <br />
+    ```typescript
+    import { Schema } from "@rbxts/roblox-schema";
+
+    const dataType = Schema.dataType("CFrame");
+
+    dataType.parse(new Vector3(1, 2, 3)) // false
+    dataType.parse(new CFrame()) // true
+    ```
+</details>
+
+
+<br />
+
+
+### `instance()`
+
+```typescript
+static instance<K extends keyof Instances>(className: K): InstanceSchema<K>
+```
+Creates a new [`InstanceSchema`](/docs/api-reference/schemas/instance-schema) with a target class name provided, and returns it.
+
+**Arguments :**
+- `className: keyof Instances` : target Roblox class name to allow (Part, Script, ...)
+
+
+<br />
+
+
+### `array()`
+
+```typescript
+static array<T>(schema: BaseSchema<T>): ArraySchema<T>
+```
+Creates a new [`ArraySchema`](/docs/api-reference/schemas/array-schema) with a target type schema provided, and returns it.
+
+**Arguments :**
+- `schema: BaseSchema<T>` : schema which every element of the array will need to be parsed by.
+
+<details>
+    <summary>Code sample</summary>
+    <br />
+    ```typescript
+    import { Schema } from "@rbxts/roblox-schema";
+
+    const arraySchema = Schema.array(Schema.string());
+
+    arraySchema.parse([]) // true
+    arraySchema.parse([ "a", "b" ]) // true
+    arraySchema.parse([ "a", 1 ]) // false
+    ```
+</details>
+
+
+<br />
+
+
+### `object()`
+
+```typescript
+static object<T extends Record<string, BaseSchema>>(obj: T): ObjectSchema<T & Record<string, any>>;
+```
+Creates a new [`ObjectSchema`](/docs/api-reference/schemas/object-schema) with a target object type, and returns it.
+
+**Arguments :**
+- `obj: Record<string, BaseSchema>` : an object representing the structure a value should have to be validated by the parser.
+
+<details>
+    <summary>Code sample</summary>
+    ```typescript
+    import { Schema } from "@rbxts/roblox-schema";
+
+    const person = Schema.object({
+        name: Schema.string(),
+        age: Schema.number()
+    })
+
+    person.parse({ name: "John", age: 26 }) // true
+    person.parse({ name: "Oliver" }) // false - Missing property age
+    person.parse({ name: "George", age: 17, favColor: "blue" }) // true - see StrictObject
+    ```
+</details>
+
+
+<br />
+
+
+### `strictObject()`
+
+```typescript
+static strictObject<T extends Record<string, BaseSchema>>(obj: T): StrictObjectSchema<T>;
+```
+Creates a new [`StrictObjectSchema`](/docs/api-reference/schemas/strict-object-schema) with a target object type, and returns it.
+
+This method is similar to `object()`, but this schema will not allow extra properties on the parsed object.
+
+**Arguments :**
+- `obj: Record<string, BaseSchema>` : an object representing the structure a value should have to be validated by the parser.
+
+<details>
+    <summary>Code sample</summary>
+
+    See [`object()`](/docs/api-reference/schema#object).
+</details>
+
+
+<br />
+
+
+### `literal()`
+
+```typescript
+static literal<const T extends unknown[]>(values: T): LiteralSchema<T>;
+```
+Creates a new [`LiteralSchema`](/docs/api-reference/schemas/literal-schema) with target allowed values, and returns it.
+
+**Arguments :**
+- `values: unknown[]` : A list of values that are allowed to be parsed. Any value parsed which is not in this array will not be validated.
+
+<details>
+    <summary>Code sample</summary>
+    ```typescript
+    import { Schema, Infer } from "@rbxts/roblox-schema";
+
+    const schema = Schema.literal([ "a", 17, true ]);
+
+    schema.parse("a"); // true
+    schema.parse(true); // true
+    schema.parse("c"); // false
+    ```
+</details>
+
+
+<br />
+
+
+### `union()`
+
+```typescript
+static union<S extends readonly BaseSchema[]>(...schemas: S): UnionSchema<S>;
+```
+Creates a new [`UnionSchema`](/docs/api-reference/schemas/union-schema) with allowed schemas provided, and returns it.
+
+**Arguments :**
+- `...schemas: S` : a list of schemas allowing multiple types for one value, meaning a value needs to be validated by at least one of the schemas in the list.
+
+<details>
+    <summary>Code sample</summary>
+    <br />
+    ```typescript
+    import { Schema, Infer } from "@rbxts/roblox-schema";
+
+    Schema.union(Schema.string());
+    // =
+    Schema.string();
+
+
+    Schema.union(Schema.literal([ "a" ]), Schema.literal([ "b" ]));
+    // =
+    Schema.literal([ "a", "b" ]);
+
+
+    const schema = Schema.union(Schma.string(), Schema.number());
+
+    schema.parse(123); // true
+    schema.parse("abc"); // true
+    ```
+</details>

@@ -1,0 +1,28 @@
+---
+sidebar_position: 3
+---
+
+# BooleanSchema
+
+Auto-generated class.
+
+## Methods
+
+
+<br />
+
+
+### `boolFromString()`
+
+```typescript
+boolFromString(data?: BoolFromStringData): this
+```
+When parsing, the schema will also allow truthy/falsy string values such as (`on/off`, `yes/no`, ...). These values can be modified by passing a value to the argument `data`.
+
+Default value :
+```typescript
+{
+    truthy: [ "true", "1", "yes", "on", "y", "enabled" ],
+    falsy: [ "false", "0", "no", "off", "n", "disabled" ],
+}
+```
