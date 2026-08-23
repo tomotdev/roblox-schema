@@ -63,8 +63,6 @@ class StringSchema extends BaseSchema {
 	 * @returns A boolean indicating if the value is valid
 	 */
 	override parse(value: unknown): value is string {
-		if (this._optional && value === undefined) return true;
-
 		return _default("string", undefined, value) && _constraints("string", this.constraints, value);
 	}
 

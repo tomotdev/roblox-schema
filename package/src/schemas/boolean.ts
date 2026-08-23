@@ -46,8 +46,6 @@ class BooleanSchema extends BaseSchema {
 	 * @returns A boolean indicating if the value is valid
 	 */
 	override parse(value: unknown): value is boolean {
-		if (this._optional && value === undefined) return true;
-
         if(this.isBoolFromStringAllowed && typeIs(value, "string")) {
             if(this.boolFromStringData.truthy.includes(value)) return true;
             if(this.boolFromStringData.falsy.includes(value)) return true;

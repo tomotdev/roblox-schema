@@ -6,6 +6,7 @@ import { InstanceSchema } from "./schemas/instance";
 import { LiteralSchema } from "./schemas/literal";
 import { NumberSchema } from "./schemas/number";
 import { ObjectSchema, StrictObjectSchema } from "./schemas/object";
+import { OptionalSchema } from "./schemas/optional";
 import { StringSchema } from "./schemas/string";
 import { UnionSchema } from "./schemas/union";
 import { DataTypes, Infer } from "./types";
@@ -30,42 +31,42 @@ import { DataTypes, Infer } from "./types";
  * ```
  */
 class Schema {
-    /**
+	/**
 	 * Validates value if it is a number.
 	 */
 	static number(): NumberSchema {
 		return new NumberSchema();
 	}
 
-    /**
+	/**
 	 * Validates value if it is a string.
 	 */
 	static string(): StringSchema {
 		return new StringSchema();
 	}
 
-    /**
+	/**
 	 * Validates value if it is a boolean.
 	 */
 	static boolean(): BooleanSchema {
 		return new BooleanSchema();
 	}
 
-    /**
+	/**
 	 * Validates value if it is an instance of the provided DataType (such as `Vector3`, `CFrame`, `UDim2` ...)
 	 */
 	static dataType<K extends keyof DataTypes>(t: K): DataTypeSchema<K> {
 		return new DataTypeSchema(t);
 	}
 
-    /**
+	/**
 	 * Validates value if it is an instance of the provided class.
 	 */
 	static instance<K extends keyof Instances>(className: K): InstanceSchema<K> {
 		return new InstanceSchema(className);
 	}
 
-    /**
+	/**
 	 * Validates the value only if it is an array of the provided type.
 	 * @example
 	 * ```ts
@@ -79,9 +80,9 @@ class Schema {
 		return new ArraySchema(schema);
 	}
 
-    /**
-     * Same method as `Schema.strictObject()`, but will allow extra properties that are not defined in the provided schema.
-     */
+	/**
+	 * Same method as `Schema.strictObject()`, but will allow extra properties that are not defined in the provided schema.
+	 */
 	static object<T extends Record<string, BaseSchema>>(obj: T): ObjectSchema<T & Record<string, any>> {
 		return new ObjectSchema(obj);
 	}
@@ -123,6 +124,22 @@ class Schema {
 	 */
 	static union<S extends readonly BaseSchema[]>(...schemas: S): UnionSchema<S> {
 		return new UnionSchema(schemas);
+	}
+
+	/**
+	 * Value parsed can either be `undefined` or of the provided schema type
+     * 
+     * Same result with `BaseSchema`'s `optional()` method :
+     * ```
+    import { Schema } from "@rbxts/roblox-schema";
+
+    Schema.optional(Schema.string());
+    // =
+    Schema.string().optional();
+     * ```
+	 */
+	static optional<T>(schema: BaseSchema<T>): OptionalSchema<T> {
+		return new OptionalSchema(schema);
 	}
 }
 

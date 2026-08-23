@@ -76,8 +76,6 @@ class NumberSchema extends BaseSchema {
 	 * @returns A boolean indicating if the value is valid
 	 */
 	override parse(value: unknown): value is number {
-		if (this._optional && value === undefined) return true;
-
 		return _default("number", undefined, value) && _constraints("number", this.constraints, value);
 	}
 
