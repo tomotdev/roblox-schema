@@ -23,7 +23,7 @@ import _default from "../core/default";
  * else print("User invalid");
  * ```
  */
-class StringSchema extends BaseSchema {
+class StringSchema extends BaseSchema<string> {
 	/**
 	 * Defines the minimum string length.
      * @param strict Whether to include the provided value in the range

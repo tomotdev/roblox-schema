@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 <br>
 
+## v1.1.2 · 23/08/2026
+- Fixed every schema class not extending correctly from `BaseSchema`, breaking type inference
+
 ## v1.1.1 · 23/08/2026
 - Fixed `BaseSchema`'s `optional()` method not working with type inference
 - Added `OptionalSchema`, accessible through `Schema.optional()` static method

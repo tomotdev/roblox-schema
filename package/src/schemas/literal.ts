@@ -1,7 +1,7 @@
 import _literal from "../core/literal";
 import { BaseSchema } from ".";
 
-class LiteralSchema<const T extends unknown[]> extends BaseSchema {
+class LiteralSchema<const T extends unknown[]> extends BaseSchema<T[number]> {
     private values: T;
 
     override parse(value: any): value is T[number] {

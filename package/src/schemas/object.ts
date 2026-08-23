@@ -3,7 +3,7 @@ import _strictObject from "../core/strictObject";
 import { BaseSchema } from ".";
 import { Infer } from "../types";
 
-class ObjectSchema<T extends Record<string, BaseSchema>, P = { [K in keyof T]: Infer<T[K]> }> extends BaseSchema {
+class ObjectSchema<T extends Record<string, BaseSchema>, P = { [K in keyof T]: Infer<T[K]> }> extends BaseSchema<P> {
     private obj: T;
 
     override parse(value: any): value is P {
@@ -16,7 +16,7 @@ class ObjectSchema<T extends Record<string, BaseSchema>, P = { [K in keyof T]: I
     }
 }
 
-class StrictObjectSchema<T extends Record<string, BaseSchema>, P = { [K in keyof T]: Infer<T[K]> }> extends BaseSchema {
+class StrictObjectSchema<T extends Record<string, BaseSchema>, P = { [K in keyof T]: Infer<T[K]> }> extends BaseSchema<P> {
     private obj: T;
 
     override parse(value: any): value is P {

@@ -2,7 +2,7 @@ import _array from "../core/array";
 import _constraints from "../core/constraints";
 import { BaseSchema } from ".";
 
-class ArraySchema<T> extends BaseSchema {
+class ArraySchema<T> extends BaseSchema<T[]> {
 	private schema: BaseSchema;
 
 	/**

@@ -2,7 +2,7 @@ import _default from "../core/default";
 import { BaseSchema } from ".";
 import { DataTypes } from "../types";
 
-class DataTypeSchema<T extends keyof DataTypes> extends BaseSchema {
+class DataTypeSchema<T extends keyof DataTypes> extends BaseSchema<DataTypes[T]> {
     private t: T;
 
     override parse(value: any): value is DataTypes[T] {

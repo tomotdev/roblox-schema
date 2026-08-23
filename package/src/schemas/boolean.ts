@@ -25,7 +25,7 @@ import { BoolFromStringData } from "../types";
  * else print("User invalid");
  * ```
  */
-class BooleanSchema extends BaseSchema {
+class BooleanSchema extends BaseSchema<boolean> {
 	private isBoolFromStringAllowed = false;
 	private boolFromStringData: BoolFromStringData = {
 		truthy: ["true", "1", "yes", "on", "y", "enabled"],

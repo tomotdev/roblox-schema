@@ -7,13 +7,11 @@ abstract class BaseSchema<T = any> {
 	/**
 	 * Value parsed can either be `undefined` or of the provided type
 	 */
-	optional(): OptionalSchema<T> {
+	optional(): BaseSchema<T | undefined> {
 		return new OptionalSchema(this);
 	}
 
-    parse(value: any): value is T {
-        return true;
-    }
+    abstract parse(value: any): value is T;
 
 	constructor() {}
 }

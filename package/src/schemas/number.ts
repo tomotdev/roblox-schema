@@ -23,7 +23,7 @@ import _default from "../core/default";
  * else print("User invalid");
  * ```
  */
-class NumberSchema extends BaseSchema {
+class NumberSchema extends BaseSchema<number> {
 	/**
 	 * Defines the minimum value for the number.
      * @param strict Whether to include the provided value in the range
