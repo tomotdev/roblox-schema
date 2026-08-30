@@ -30,7 +30,7 @@ import { DataTypes, Infer } from "./types";
  * else print("User invalid");
  * ```
  */
-class Schema {
+abstract class Schema {
 	/**
 	 * Validates value if it is a number.
 	 */
@@ -141,6 +141,48 @@ class Schema {
 	static optional<T>(schema: BaseSchema<T>): OptionalSchema<T> {
 		return new OptionalSchema(schema);
 	}
+
+    /**
+     * Shorthand for `Schema.dataType("Vector3")`
+     */
+    static vector3(): DataTypeSchema<"Vector3"> {
+        return this.dataType("Vector3");
+    }
+
+    /**
+     * Shorthand for `Schema.dataType("Vector2")`
+     */
+    static vector2(): DataTypeSchema<"Vector2"> {
+        return this.dataType("Vector2");
+    }
+
+    /**
+     * Shorthand for `Schema.dataType("CFrame")`
+     */
+    static cframe(): DataTypeSchema<"CFrame"> {
+        return this.dataType("CFrame");
+    }
+
+    /**
+     * Shorthand for `Schema.dataType("UDim")`
+     */
+    static udim(): DataTypeSchema<"UDim"> {
+        return this.dataType("UDim");
+    }
+
+    /**
+     * Shorthand for `Schema.dataType("Vector3")`
+     */
+    static udim2(): DataTypeSchema<"UDim2"> {
+        return this.dataType("UDim2");
+    }
+
+    /**
+     * Shorthand for `Schema.dataType("Color3")`
+     */
+    static color3(): DataTypeSchema<"Color3"> {
+        return this.dataType("Color3")
+    }
 }
 
 export { Schema, Infer };

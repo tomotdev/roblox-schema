@@ -1,32 +1,34 @@
 import _object from "../core/object";
 import _strictObject from "../core/strictObject";
 import { BaseSchema } from ".";
-import { Infer } from "../types";
+import { Infer, ParseResult } from "../types";
 
-class ObjectSchema<T extends Record<string, BaseSchema>, P = { [K in keyof T]: Infer<T[K]> }> extends BaseSchema<P> {
-    private obj: T;
+type StrictObjectHelper<T extends Record<string, BaseSchema<any>>> = {
+	[K in keyof T as undefined extends Infer<T[K]> ? K : never]?: Infer<T[K]>;
+} & {
+	[K in keyof T as undefined extends Infer<T[K]> ? never : K]: Infer<T[K]>;
+};
 
-    override parse(value: any): value is P {
-        return _object(undefined, this.obj, value);
-    }
+type ObjectHelper<T extends Record<string, BaseSchema<any>>> = StrictObjectHelper<T> & Record<string, any>;
 
-    constructor(obj: T) {
-        super()
-        this.obj = obj;
-    }
+class ObjectSchema<T extends Record<string, BaseSchema>> extends BaseSchema<ObjectHelper<T>> {
+	override safeParse(value: any): ParseResult {
+		return this.internalParse(_object, undefined, this.obj, value);
+	}
+
+	constructor(private obj: T) {
+		super();
+	}
 }
 
-class StrictObjectSchema<T extends Record<string, BaseSchema>, P = { [K in keyof T]: Infer<T[K]> }> extends BaseSchema<P> {
-    private obj: T;
+class StrictObjectSchema<T extends Record<string, BaseSchema>> extends BaseSchema<StrictObjectHelper<T>> {
+	safeParse(value: any): ParseResult {
+		return this.internalParse(_strictObject, undefined, this.obj, value);
+	}
 
-    override parse(value: any): value is P {
-        return _strictObject(undefined, this.obj, value);
-    }
-
-    constructor(obj: T) {
-        super()
-        this.obj = obj;
-    }
+	constructor(private obj: T) {
+		super();
+	}
 }
 
 export { ObjectSchema, StrictObjectSchema };

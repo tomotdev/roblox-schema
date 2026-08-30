@@ -1,16 +1,18 @@
 import _array from "../core/array";
 import _constraints from "../core/constraints";
 import { BaseSchema } from ".";
+import { ParseResult } from "../types";
 
 class ArraySchema<T> extends BaseSchema<T[]> {
-	private schema: BaseSchema;
-
 	/**
 	 * Defines the minimum array length.
 	 * @param strict Whether to include the provided value in the range
 	 */
 	min(min: number, strict?: boolean): this {
-		this.constraints.push((value: unknown[]) => (strict ? value.size() > min : value.size() >= min));
+		this.constraints.push({
+			error: "Array length must be greater than " + min,
+			test: (value: unknown[]) => (strict ? value.size() > min : value.size() >= min),
+		});
 
 		return this;
 	}
@@ -20,7 +22,10 @@ class ArraySchema<T> extends BaseSchema<T[]> {
 	 * @param strict Whether to include the provided value in the range
 	 */
 	max(max: number, strict?: boolean): this {
-		this.constraints.push((value: unknown[]) => (strict ? value.size() < max : value.size() <= max));
+		this.constraints.push({
+			error: "Array length must be less than " + max,
+			test: (value: unknown[]) => (strict ? value.size() < max : value.size() <= max),
+		});
 
 		return this;
 	}
@@ -34,18 +39,20 @@ class ArraySchema<T> extends BaseSchema<T[]> {
 	 * ```
 	 */
 	length(len: number): this {
-		this.constraints.push((value: unknown[]) => value.size() === len);
+		this.constraints.push({
+			error: "Array length must be equal to " + len,
+			test: (value: unknown[]) => value.size() === len,
+		});
 
 		return this;
 	}
 
-	override parse(value: any): value is T[] {
-		return _array(undefined, this.schema, value) && _constraints(undefined, this.constraints, value);
+	safeParse(value: any): ParseResult {
+		return this.internalParse(_array, undefined, this.schema, value);
 	}
 
-	constructor(schema: BaseSchema) {
+	constructor(private schema: BaseSchema) {
 		super();
-		this.schema = schema;
 	}
 }
 

@@ -1,18 +1,15 @@
 import _default from "../core/default";
 import { BaseSchema } from ".";
-import { DataTypes } from "../types";
+import { DataTypes, ParseResult } from "../types";
 
 class DataTypeSchema<T extends keyof DataTypes> extends BaseSchema<DataTypes[T]> {
-    private t: T;
+	safeParse(value: any): ParseResult {
+		return this.internalParse(_default, "dataType", this.t, value);
+	}
 
-    override parse(value: any): value is DataTypes[T] {
-        return _default("dataType", this.t, value);
-    }
-
-    constructor(t: T) {
-        super()
-        this.t = t;
-    }
+	constructor(private t: T) {
+		super();
+	}
 }
 
 export { DataTypeSchema };

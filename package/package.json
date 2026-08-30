@@ -6,7 +6,8 @@
 	"scripts": {
 		"build": "rbxtsc",
 		"watch": "rbxtsc -w",
-		"prepublishOnly": "npm run build"
+		"prepublishOnly": "npm run build",
+        "test": "rbxtsc && lune run node_modules/@rbxts/lunit/scripts/lunit.luau out/tests"
 	},
 	"keywords": [],
 	"author": "tomotdev",
@@ -15,10 +16,11 @@
 	"types": "out/index.d.ts",
 	"files": [
 		"out",
+        "!out/tests/**/*",
 		"!**/*.tsbuildinfo",
-        "../CHANGELOG.md",
-        "../README.md",
-        "../LICENSE.md"
+		"../CHANGELOG.md",
+		"../README.md",
+		"../LICENSE.md"
 	],
 	"publishConfig": {
 		"access": "public"
@@ -35,5 +37,8 @@
 		"prettier": "^3.9.6",
 		"roblox-ts": "^3.0.0",
 		"typescript": "^5.9.3"
+	},
+	"dependencies": {
+		"@rbxts/lunit": "^4.0.2"
 	}
 }

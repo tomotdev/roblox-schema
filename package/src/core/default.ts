@@ -1,7 +1,12 @@
-import { SchemaInputMap } from "../types";
+import { Error, ParseResult, SchemaInputMap } from "../types";
 
-export default function (t: keyof SchemaInputMap, schema: SchemaInputMap[keyof SchemaInputMap], value: any): boolean {
+export default function (
+	t: keyof SchemaInputMap,
+	schema: SchemaInputMap[keyof SchemaInputMap],
+	value: any,
+): ParseResult {
 	let referenceType: keyof CheckableTypes;
+	const errors: Error[] = [];
 
 	switch (t) {
 		case "number":
@@ -15,10 +20,33 @@ export default function (t: keyof SchemaInputMap, schema: SchemaInputMap[keyof S
 			break;
 
 		default:
-			return false;
+			return {
+				success: false,
+				errors: [
+					{
+						expected: "number | string | boolean | DataTypes[keyof DataTypes]",
+						received: typeOf(value),
+						code: "invalid_type",
+						path: [],
+						message: "",
+					},
+				],
+			};
 	}
 
 	const temp = typeIs(value, referenceType);
 
-	return temp;
+	if (!temp)
+		errors.push({
+			expected: referenceType,
+			received: typeOf(value),
+			code: "invalid_type",
+			path: [],
+			message: "",
+		});
+
+	return {
+		success: temp,
+		errors,
+	};
 }
