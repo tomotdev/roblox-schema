@@ -24,6 +24,8 @@ optional(): this
 ```
 Allows the parsed value to be of type `undefined` instead of following the schema type.
 
+Same behavior as `Schema.optional(schema)`.
+
 
 <br />
 
@@ -33,4 +35,30 @@ Allows the parsed value to be of type `undefined` instead of following the schem
 ```typescript
 parse(value: any): boolean
 ```
-Returns a boolean representing whether the provided value meets the type requirements of the schema.
+Returns `true` if the provided value meets the type requirements of the schema.
+If it does not, this method throws an error, indicating why the value failed to parse.
+
+
+<br />
+
+
+### `safeParse()`
+
+```typescript
+abstract safeParse(value: any): ParseResult
+```
+Same behavior as `BaseSchema.parse()`, but catches the errors and returns them.
+
+See [`ParseResult`](/docs/api-reference/types/parse-result).
+
+
+<br />
+
+
+### `addConstraint()`
+
+```typescript
+addConstraint(constraint: Constraint): this
+```
+Adds a custom constraint to the current schema. This constraint's `test` method will be applied to the value being parsed,
+and can throw an error if the value does not meet the constraint's requirement.

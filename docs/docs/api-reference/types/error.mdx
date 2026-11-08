@@ -1,0 +1,23 @@
+---
+sidebar_position: 5
+---
+
+# Error / ErrorCode
+
+```typescript
+interface Error {
+    expected: string;
+    received: string;
+    code: ErrorCode;
+    path: Array<string | number>;
+    message: string;
+}
+```
+
+Represents an error object, returned by [`BaseSchema.safeParse()`](/docs/api-reference/schemas/base-schema).
+
+```typescript
+type ErrorCode = "invalid_type" | "extra_key" | "invalid_key" | "constraint_error"
+```
+Indicates the type of the error that occured : wrong type (`invalid_type`), extra unwanted key (`extra_key`),
+invalid key type (`invalid_key`) and an error caused by a custom constraint (`constraint_error`).

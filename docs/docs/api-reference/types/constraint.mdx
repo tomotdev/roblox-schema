@@ -5,10 +5,13 @@ sidebar_position: 3
 # Constraint
 
 ```typescript
-type Constraint = (value: any) => boolean;
+interface Constraint {
+    error: string;
+    test: (value: any) => boolean;
+}
 ```
+An object containing 2 members : `error` and `test()`.
 
-A function that returns a boolean defining if the value parsed verifies the constraint requirements. It is used internally in methods like `min()`/`max()`.
+`test()` is a method that returns a boolean whether the provided value matches the constraint requirements.
 
-We plan to add custom constraint in the future, which would allow developers to create their own constraints.
-
+`error` is a string that will be displayed in the error thrown by a value that did not make `test()` return `true`.

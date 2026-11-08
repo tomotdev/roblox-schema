@@ -37,8 +37,8 @@ import { Schema } from "@rbxts/roblox-schema";
 
 const schema = Schema.string().min(5);
 
-schema.parse("abc") // false
-schema.parse("abcdef") // true
+schema.parse("abc") // Throws an error
+schema.parse("abcdef") // Parses
 ```
 
 You can check the API reference for more details about every type of schema.
@@ -57,8 +57,8 @@ const userSchema = Schema.strictObject({
     username: Schema.string()
 });
 
-userSchema.parse({ id: 0, username: "John" }) // true - The value is valid according to the schema
-userSchema.parse({ id: true, username: "Lin" }) // false - "id" is not of type number
+userSchema.parse({ id: 0, username: "John" }) // Parses - The value is valid according to the schema
+userSchema.parse({ id: true, username: "Lin" }) // Throws an error - "id" is not of type number
 ```
 
 ## Inferring types
@@ -78,5 +78,5 @@ type User = Infer<typeof userSchema>;
 
 let user: User;
 
-console.log(user.id) // Valid TypeScript
+console.log(user.id) // Valid TypeScript code
 ```

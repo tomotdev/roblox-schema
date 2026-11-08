@@ -1,6 +1,6 @@
 import _constraints from "../core/constraints";
 import { BaseSchema } from ".";
-import { ParseResult, SchemaInputMap } from "../types";
+import { ParseResult } from "../types";
 import _default from "../core/default";
 
 class StringSchema extends BaseSchema<string> {

@@ -1,5 +1,4 @@
 import { BaseSchema } from "./schemas";
-import { InstanceSchema } from "./schemas/instance";
 
 /**
  * An interface containing every Roblox data type
@@ -44,7 +43,7 @@ export type SchemaInputMap = {
 	instance: {
 		class: keyof Objects;
 		props: Properties<keyof Instances> | undefined;
-		children: InstanceSchemaBase[] | undefined;
+		children: (readonly InstanceSchemaBase[]) | undefined;
 	};
 	dataType: keyof DataTypes;
 	array: BaseSchema;
@@ -139,8 +138,8 @@ export interface InstanceSchemaBase<T = any> extends BaseSchema<T> {
     className: keyof Instances;
 }
 
-export type ChildName<C> = C extends BaseSchema<infer T> ? (T extends { Name: infer N } ? N : never) : never;
+export type ChildName<C> = C extends InstanceSchemaBase<infer T> ? (T extends { Name: infer N } ? N : never) : never;
 
-export type ChildrenMap<Children extends BaseSchema<any>[]> = {
+export type ChildrenMap<Children extends readonly InstanceSchemaBase<any>[]> = {
 	[C in Children[number] as ChildName<C>]: Infer<C>;
 };

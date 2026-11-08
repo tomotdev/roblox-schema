@@ -20,15 +20,11 @@ const parser = Schema.object({
 	age: Schema.optional(Schema.number())
 });
 
-parser.parse({
-	id: 0,
-	name: "Jack",
-}); // true - All required keys are provided and values are correct
+parser.parse({ id: 0, name: "Jack" });
+// Parses - All required keys are provided and values are correct
 
-parser.parse({
-	name: "Tom",
-	age: 26,
-}); // false - Missing "id"
+parser.parse({ name: "Tom", age: 26 });
+// Throws an error - Missing "id"
 ```
 
 ## ⭐ Features
@@ -44,7 +40,7 @@ parser.parse({
 
 ## 📖 Documentation
 
-You can find full documentation [here](https://docs.tomot.fr/roblox-schema/docs/).
+You can find full documentation [here](https://docs.tomot.fr/roblox-schema/).
 
 ## 🔄️ Change log
 

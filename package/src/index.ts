@@ -9,7 +9,7 @@ import { ObjectSchema, StrictObjectSchema } from "./schemas/object";
 import { OptionalSchema } from "./schemas/optional";
 import { StringSchema } from "./schemas/string";
 import { UnionSchema } from "./schemas/union";
-import { DataTypes, Infer } from "./types";
+import { DataTypes, Infer, InstanceSchemaBase, Properties } from "./types";
 
 /**
  * Main class allowing validation.
@@ -62,8 +62,8 @@ abstract class Schema {
 	/**
 	 * Validates value if it is an instance of the provided class.
 	 */
-	static instance<K extends keyof Instances>(className: K): InstanceSchema<K> {
-		return new InstanceSchema(className);
+	static instance<K extends keyof Instances, const Props extends Properties<K> = {}, const Children extends readonly InstanceSchemaBase[] = []>(className: K, props?: Props, children?: Children): InstanceSchema<K, Props, Children> {
+		return new InstanceSchema(className, props, children);
 	}
 
 	/**
@@ -72,8 +72,8 @@ abstract class Schema {
 	 * ```ts
 	 * const schema = Schema.array(Schema.number());
 	 *
-	 * schema.parse([ 1, 2, 3 ]); // true
-	 * schema.parse([ "a", "b", "c" ]); // false
+	 * schema.parse([ 1, 2, 3 ]);       // Parses
+	 * schema.parse([ "a", "b", "c" ]); // Throws an error
 	 * ```
 	 */
 	static array<T>(schema: BaseSchema<T>): ArraySchema<T> {
@@ -97,15 +97,11 @@ abstract class Schema {
         age: Schema.optional(Schema.number())
     });
 
-	schema.parse({
-        id: 0,
-        name: "Jack"
-    }); // true - All required keys are provided and values are correct
+	schema.parse({ id: 0, name: "Jack" });
+    // Parses - All required keys are provided and values are correct
     
-	schema.parse({
-        name: "Tom",
-        age: 26
-    }); // false - Missing "id"
+	schema.parse({ name: "Tom", age: 26 });
+    // Throws an error - Missing "id"
 	 * ```
      */
 	static strictObject<T extends Record<string, BaseSchema>>(obj: T): StrictObjectSchema<T> {

@@ -12,7 +12,7 @@ type StrictObjectHelper<T extends Record<string, BaseSchema<any>>> = {
 type ObjectHelper<T extends Record<string, BaseSchema<any>>> = StrictObjectHelper<T> & Record<string, any>;
 
 class ObjectSchema<T extends Record<string, BaseSchema>> extends BaseSchema<ObjectHelper<T>> {
-	override safeParse(value: any): ParseResult {
+	safeParse(value: any): ParseResult {
 		return this.internalParse(_object, undefined, this.obj, value);
 	}
 

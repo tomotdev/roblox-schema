@@ -77,12 +77,16 @@ Creates a new [`DataTypeSchema`](/docs/api-reference/schemas/data-type-schema) w
 ### `instance()`
 
 ```typescript
-static instance<K extends keyof Instances>(className: K): InstanceSchema<K>
+static instance<K extends keyof Instances, const Props extends Properties<K> = {}, const Children extends readonly InstanceSchemaBase[] = []>(className: K, props?: Props, children?: Children): InstanceSchema<K, Props, Children>
 ```
 Creates a new [`InstanceSchema`](/docs/api-reference/schemas/instance-schema) with a target class name provided, and returns it.
 
+Properties/children can also be passed, so the instances tested must match the same properties and have the same children.
+
 **Arguments :**
 - `className: keyof Instances` : target Roblox class name to allow (Part, Script, ...)
+- `properties: Properties<keyof Instances>` : properties the parsed element must have
+- `children: InstanceSchema[]` : children the element must have to parse
 
 
 <br />
@@ -227,3 +231,72 @@ Creates a new [`UnionSchema`](/docs/api-reference/schemas/union-schema) with all
     schema.parse("abc"); // true
     ```
 </details>
+
+
+<br />
+
+
+### `vector3()`
+
+```typescript
+static vector3(): DataTypeSchema<"Vector3">
+```
+Shorthand for `Schema.dataType("Vector3")`.
+
+
+<br />
+
+
+### `vector2()`
+
+```typescript
+static vector2(): DataTypeSchema<"Vector2">
+```
+Shorthand for `Schema.dataType("Vector2")`.
+
+
+<br />
+
+
+### `cframe()`
+
+```typescript
+static cframe(): DataTypeSchema<"CFrame">
+```
+Shorthand for `Schema.dataType("CFrame")`.
+
+
+<br />
+
+
+### `udim()`
+
+```typescript
+static udim(): DataTypeSchema<"UDim">
+```
+Shorthand for `Schema.dataType("UDim")`.
+
+
+<br />
+
+
+### `udim2()`
+
+```typescript
+static udim2(): DataTypeSchema<"UDim2">
+```
+Shorthand for `Schema.dataType("UDim2")`.
+
+
+<br />
+
+
+### `color3()`
+
+```typescript
+static color3(): DataTypeSchema<"Color3">
+```
+Shorthand for `Schema.dataType("Color3")`.
+
+
+<br />
